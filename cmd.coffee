@@ -58,4 +58,10 @@ newVersion = do =>
 
   return versionFragments.join '.'
 
-console.log newVersion
+json.version = newVersion
+fs.writeFileSync jsonPath, JSON.stringify json, undefined, 4
+
+
+
+
+

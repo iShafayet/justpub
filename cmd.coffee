@@ -70,6 +70,9 @@ commonShellErrorHandler = (error, stdout, stderr)->
   console.log 'exec error: ' + error
   process.exit(4)
 
+commonShellVerbosityHandler = (error, stdout, stderr)->
+  console.log stdout, stderr
+
 commitToGit = (cbfn)->
 
   return cbfn() unless isGit
@@ -86,6 +89,8 @@ commitToGit = (cbfn)->
     
     commonShellErrorHandler error, stdout, stderr if error
 
+    commonShellVerbosityHandler error, stdout, stderr if verbose
+
     unless -1 < (stdout.indexOf 'package.json')
       console.log 'Something went wrong. Contact the author'
       console.log 'stdout: ' + stdout
@@ -96,9 +101,13 @@ commitToGit = (cbfn)->
 
       commonShellErrorHandler error, stdout, stderr if error
 
+      commonShellVerbosityHandler error, stdout, stderr if verbose
+
       git = exec "git commit -m \"Release #{newVersion}\"", gitOptions, (error, stdout, stderr)->
 
         commonShellErrorHandler error, stdout, stderr if error
+
+        commonShellVerbosityHandler error, stdout, stderr if verbose
 
         cbfn()
 
@@ -116,11 +125,15 @@ publishToNpm = (cbfn)->
     
     commonShellErrorHandler error, stdout, stderr if error
 
+    commonShellVerbosityHandler error, stdout, stderr if verbose
+
+    console.log stdout unless verbose
+
     cbfn()
 
 commitToGit ->
   publishToNpm ->
-    console.log 'done'
+    console.log 'Completed' if verbose
 
 
 

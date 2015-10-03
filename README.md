@@ -30,6 +30,15 @@ or
 
     justpub major
 
+# Command Line Options
+
+ Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+    -v, --verbose  output additional information
+
+
 # Customization
 
 Please create an issue regarding what sort of additional feature and customization you would like to see. We usually make things happen pretty soon.

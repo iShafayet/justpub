@@ -2,6 +2,7 @@
 commander = require 'commander'
 fs = require 'fs'
 path = require 'path'
+exec = require('child_process').exec
 
 commander.version '0.0.1'
 commander.option '-v, --verbose', 'output additional information'
@@ -27,6 +28,8 @@ jsonPath = locateFileSystemEntity dir, 'package.json'
 unless jsonPath
   console.log 'justpub only work on nodejs modules (where there is a package.json file)'
   process.exit(1)
+
+npmwd = path.dirname 'package.json'
 
 isGit = (locateFileSystemEntity dir, '.git') isnt false
 
@@ -60,6 +63,65 @@ newVersion = do =>
 
 json.version = newVersion
 fs.writeFileSync jsonPath, JSON.stringify json, undefined, 4
+
+commonShellErrorHandler = (error, stdout, stderr)->
+  console.log 'stdout: ' + stdout
+  console.log 'stderr: ' + stderr
+  console.log 'exec error: ' + error
+  process.exit(4)
+
+commitToGit = (cbfn)->
+
+  return cbfn() unless isGit
+
+  gitOptions = 
+    encoding: 'utf8',
+    timeout: 0,
+    maxBuffer: 200*1024,
+    killSignal: 'SIGTERM',
+    cwd: npmwd,
+    env: null 
+
+  git = exec 'git status', gitOptions, (error, stdout, stderr)->
+    
+    commonShellErrorHandler error, stdout, stderr if error
+
+    unless -1 < (stdout.indexOf 'package.json')
+      console.log 'Something went wrong. Contact the author'
+      console.log 'stdout: ' + stdout
+      console.log 'stderr: ' + stderr
+      process.exit(5)
+
+    git = exec 'git add package.json', gitOptions, (error, stdout, stderr)->
+
+      commonShellErrorHandler error, stdout, stderr if error
+
+      git = exec "git commit -m \"Release #{newVersion}\"", gitOptions, (error, stdout, stderr)->
+
+        commonShellErrorHandler error, stdout, stderr if error
+
+        cbfn()
+
+publishToNpm = (cbfn)->
+
+  npmOptions = 
+    encoding: 'utf8',
+    timeout: 0,
+    maxBuffer: 200*1024,
+    killSignal: 'SIGTERM',
+    cwd: npmwd,
+    env: null 
+
+  npm = exec 'npm publish', npmOptions, (error, stdout, stderr)->
+    
+    commonShellErrorHandler error, stdout, stderr if error
+
+    cbfn()
+
+commitToGit ->
+  publishToNpm ->
+    console.log 'done'
+
 
 
 

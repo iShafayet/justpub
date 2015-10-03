@@ -83,7 +83,7 @@ commitToGit = (cbfn)->
     maxBuffer: 200*1024,
     killSignal: 'SIGTERM',
     cwd: npmwd,
-    env: null 
+    env: process.env 
 
   git = exec 'git status', gitOptions, (error, stdout, stderr)->
     
@@ -119,7 +119,7 @@ publishToNpm = (cbfn)->
     maxBuffer: 200*1024,
     killSignal: 'SIGTERM',
     cwd: npmwd,
-    env: null 
+    env: process.env 
 
   npm = exec 'npm publish', npmOptions, (error, stdout, stderr)->
     

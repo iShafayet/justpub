@@ -133,7 +133,7 @@ publishToNpm = (cbfn)->
 
 commitToGit ->
   publishToNpm ->
-    console.log 'Completed' if verbose
+    console.log 'Process ended.' if verbose
 
 
 

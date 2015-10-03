@@ -25,7 +25,5 @@ unless jsonPath
   console.log 'justpub only work on nodejs modules (where there is a package.json file)'
   process.exit(1)
 
-isGit = (locateFileSystemEntity dir, '.gitignore') isnt false
-
-
+isGit = (locateFileSystemEntity dir, '.git') isnt false
 

@@ -12,6 +12,7 @@ type = (if commander.args.length > 0 and commander.args[0] in ['patch','major','
 dir = process.cwd()
 
 locateFileSystemEntity = (dir, name)->
+
   until fs.existsSync path.join dir, name
     dir = path.join dir, '../'
     if dir in [ '.', 'C:', './', '', '/', '\\' ]
@@ -23,4 +24,8 @@ jsonPath = locateFileSystemEntity dir, 'package.json'
 unless jsonPath
   console.log 'justpub only work on nodejs modules (where there is a package.json file)'
   process.exit(1)
+
+isGit = (locateFileSystemEntity dir, '.gitignore') isnt false
+
+
 

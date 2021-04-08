@@ -39,15 +39,7 @@ or
     -v, --verbose  output additional information
 
 
-# Customization
+# LICENCE
 
-Please create an issue regarding what sort of additional feature and customization you would like to see. We usually make things happen pretty soon.
-
-# Contributing
-
-We actively check for issues even for the least used repositories (unless explicitly abandoned). All of our opensource repositories are being used in commercial projects by teamO4 or bbsenterprise. So, it is very likely that we will sort out important issues not long after they are posted.
-
-Please create a github issue if you find a bug or have a feature request.
-
-Pull requests are always welcome for any of our public repos.
+[MIT](LICENSE)
 

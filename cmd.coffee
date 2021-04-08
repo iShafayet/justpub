@@ -88,7 +88,6 @@ commitToGit = (cbfn)->
   git = exec 'git status', gitOptions, (error, stdout, stderr)->
     
     commonShellErrorHandler error, stdout, stderr if error
-
     commonShellVerbosityHandler error, stdout, stderr if verbose
 
     unless -1 < (stdout.indexOf 'package.json')
@@ -100,13 +99,11 @@ commitToGit = (cbfn)->
     git = exec 'git add package.json', gitOptions, (error, stdout, stderr)->
 
       commonShellErrorHandler error, stdout, stderr if error
-
       commonShellVerbosityHandler error, stdout, stderr if verbose
 
       git = exec "git commit -m \"Release #{newVersion}\"", gitOptions, (error, stdout, stderr)->
 
         commonShellErrorHandler error, stdout, stderr if error
-
         commonShellVerbosityHandler error, stdout, stderr if verbose
 
         cbfn()
@@ -124,7 +121,6 @@ publishToNpm = (cbfn)->
   npm = exec 'npm publish', npmOptions, (error, stdout, stderr)->
     
     commonShellErrorHandler error, stdout, stderr if error
-
     commonShellVerbosityHandler error, stdout, stderr if verbose
 
     console.log stdout unless verbose
